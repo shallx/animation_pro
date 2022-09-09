@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
+import '../views/animated_list_view.dart';
+
 class AnimatedListController extends GetxController {
   List<String> list = [];
 
@@ -48,5 +50,19 @@ class AnimatedListController extends GetxController {
     scrollController.animateTo(scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 200),
         curve: Curves.fastOutSlowIn);
+  }
+
+  void removeFromList(int index) {
+    listKey.currentState!.removeItem(
+      index,
+      (context, animation) => HeightTransition(
+        index: index,
+        animation: animation,
+        item: list[index],
+      ),
+      duration: const Duration(milliseconds: 400),
+    );
+    list.removeAt(index);
+    update();
   }
 }

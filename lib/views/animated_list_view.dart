@@ -20,11 +20,18 @@ class AnimatedListView extends StatelessWidget {
                   initialItemCount: 0,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemBuilder: ((context, index, animation) => HeightTransition(
+                  itemBuilder: ((context, index, animation) {
+                    return InkWell(
+                      onTap: () {
+                        controller.removeFromList(index);
+                      },
+                      child: HeightTransition(
                         index: index,
                         animation: animation,
                         item: controller.list[index],
-                      )),
+                      ),
+                    );
+                  }),
                 ),
                 ElevatedButton(
                   onPressed: () {
