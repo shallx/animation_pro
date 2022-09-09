@@ -1,4 +1,6 @@
+import 'package:animation_pro/controller/animated_list_controller.dart';
 import 'package:animation_pro/routes/routes.dart';
+import 'package:animation_pro/views/animated_list_view.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 
@@ -24,6 +26,14 @@ class AppRouter {
       page: () => const LightSaberView(),
       binding: BindingsBuilder((){
         Get.lazyPut<LightsaberController>(() => LightsaberController());
+      })
+    ),
+
+    GetPage(
+      name: Routes.ANIMATED_LIST_VIEW,
+      page: () => const AnimatedListView(),
+      binding: BindingsBuilder((){
+        Get.lazyPut<AnimatedListController>(() => AnimatedListController());
       })
     ),
   ];

@@ -33,6 +33,10 @@ class HomeView extends StatelessWidget {
                     onPressed: () => controller.navigateToLightSaber(),
                     child: const Text('LightSaber'),
                   ),
+                  ElevatedButton(
+                    onPressed: () => controller.navigateToAnimatedList(),
+                    child: const Text('Animated List'),
+                  ),
                 ],
               ),
             ),
