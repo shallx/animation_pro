@@ -10,46 +10,67 @@ class LightSaberView extends StatelessWidget {
     return GetBuilder<LightsaberController>(
       builder: (controller) {
         return Scaffold(
-          body: SafeArea(child: Column(
-            children: [
-              const Spacer(),
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    AnimatedContainer(
-                      curve: Curves.easeInToLinear,
-                      duration: const Duration(milliseconds: 500),
-                      height: controller.height,
-                      child: const LightSaberTop(),
+          appBar: AppBar(),
+          body: SafeArea(
+            child: Column(
+              children: [
+                const Spacer(),
+                AnimatedBuilder(
+                    animation: controller.animeController,
+                    builder: (context, child) {
+                      return Transform.rotate(
+                        angle: controller.swingAnimation.value,
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              AnimatedBuilder(
+                                animation: controller.shadowAnimController,
+                                builder: (context, child) => SizedBox(
+                                  height: controller.drawAnimation.value,
+                                  child: LightSaberTop(
+                                    blurRadius: (5 +
+                                            controller.shadowAnimController
+                                                    .value *
+                                                15)
+                                        .toDouble(),
+                                  ),
+                                ),
+                              ),
+                              const LightSaberBase(),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      controller.toggleLightSaber();
+                    },
+                    child: Text(
+                      "${controller.isLightSaberDrawn ? 'Hide' : 'Draw'} Light Saber",
                     ),
-                    const LightSaberBase(),
-                    ElevatedButton(
-                      onPressed: () {
-                        controller.toggleLightSaber();
-                      },
-                      child: Text(
-                        "${controller.isLightSaberDrawn ? 'Hide' : 'Draw'} Light Saber",
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          )),
+                  ),
+                )
+              ],
+            ),
+          ),
         );
       },
     );
   }
 }
 
-
 class LightSaberTop extends StatelessWidget {
   const LightSaberTop({
     Key? key,
+    this.blurRadius,
   }) : super(key: key);
+
+  final double? blurRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -59,16 +80,16 @@ class LightSaberTop extends StatelessWidget {
       margin: const EdgeInsets.symmetric(
         horizontal: 22,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.red,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.red,
-            blurRadius: 10,
+            blurRadius: blurRadius ?? 5,
           )
         ],
       ),
